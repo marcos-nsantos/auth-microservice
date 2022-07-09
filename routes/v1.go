@@ -7,4 +7,5 @@ import (
 
 func HandleRequestsV1(v1 chi.Router) {
 	v1.Post("/users", handler.CreateUser)
+	v1.Get("/users/{id}", handler.FindUserByID)
 }
