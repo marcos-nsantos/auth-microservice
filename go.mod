@@ -2,7 +2,12 @@ module github.com/marcos-nsantos/e-commerce/auth-service
 
 go 1.18
 
-require github.com/go-chi/chi/v5 v5.0.7
+require (
+	github.com/go-chi/chi/v5 v5.0.7
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	gorm.io/driver/postgres v1.3.8
+	gorm.io/gorm v1.23.8
+)
 
 require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -15,8 +20,5 @@ require (
 	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gorm.io/driver/postgres v1.3.8 // indirect
-	gorm.io/gorm v1.23.8 // indirect
 )
