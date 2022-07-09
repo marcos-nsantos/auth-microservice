@@ -36,6 +36,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		helper.JSONResponse(w, http.StatusBadRequest, err)
 		return
 	}
+	user.Password = ""
 
 	helper.JSONResponse(w, http.StatusCreated, user)
 }
