@@ -1,0 +1,15 @@
+FROM golang:1.18-alpine as builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN go build -o /authApp
+
+FROM alpine:latest
+
+WORKDIR /
+
+COPY --from=builder authApp authApp
+
+ENTRYPOINT ["/authApp"]

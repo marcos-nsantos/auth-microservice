@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: DockerFile
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      DSN: "host=postgres user=postgres password=password dbname=users port=5432 sslmode=disable"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: "postgres:14.4"
+    container_name: postgres-auth-service
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=users
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
