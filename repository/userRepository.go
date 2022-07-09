@@ -35,3 +35,7 @@ func (ur *UserRepository) FindByID(id uint) (*userAPI, error) {
 func (ur *UserRepository) Update(user *model.User) error {
 	return ur.db.Model(&user).Select("name, email").Updates(user).Error
 }
+
+func (ur *UserRepository) UpdatePassword(user *model.User) error {
+	return ur.db.Model(&user).Update("password", user.Password).Error
+}
