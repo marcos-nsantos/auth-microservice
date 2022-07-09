@@ -15,8 +15,8 @@ import (
 )
 
 type UserToUpdate struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name  string `json:"name" validate:"required,notblank,min=3,max=255"`
+	Email string `json:"email" validate:"required,notblank,email"`
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
@@ -29,6 +29,11 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	var userToUpdate UserToUpdate
 	if err := json.NewDecoder(r.Body).Decode(&userToUpdate); err != nil {
+		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := helper.CheckForValidationErrMessages(userToUpdate); err != nil {
 		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
 		return
 	}

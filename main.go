@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/marcos-nsantos/e-commerce/auth-service/database"
+	"github.com/marcos-nsantos/e-commerce/auth-service/helper"
 	"github.com/marcos-nsantos/e-commerce/auth-service/routes"
 	"log"
 	"net/http"
@@ -18,6 +19,8 @@ func init() {
 
 func main() {
 	log.Println("Starting authentication service")
+
+	helper.RegisterValidators()
 
 	r := routes.HandleRequests()
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", webPort), r); err != nil {

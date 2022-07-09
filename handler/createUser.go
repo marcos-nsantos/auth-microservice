@@ -14,7 +14,12 @@ import (
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		helper.JSONResponse(w, http.StatusBadRequest, err)
+		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := helper.CheckForValidationErrMessages(user); err != nil {
+		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
 		return
 	}
 
@@ -33,7 +38,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	userRepository := repository.NewUserRepository(db)
 	if err := userRepository.Create(&user); err != nil {
-		helper.JSONResponse(w, http.StatusBadRequest, err)
+		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
 		return
 	}
 	user.Password = ""

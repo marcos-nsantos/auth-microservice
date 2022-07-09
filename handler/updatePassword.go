@@ -15,9 +15,9 @@ import (
 )
 
 type ChangeUserPassword struct {
-	OldPassword     string `json:"oldPassword"`
-	NewPassword     string `json:"newPassword"`
-	ConfirmPassword string `json:"confirmPassword"`
+	OldPassword     string `json:"oldPassword" validate:"required,notblank"`
+	NewPassword     string `json:"newPassword" validate:"required,notblank,min=8,max=64"`
+	ConfirmPassword string `json:"confirmPassword" validate:"required,notblank,min=8,max=64"`
 }
 
 func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +30,11 @@ func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 
 	var changeUserPassword ChangeUserPassword
 	if err := json.NewDecoder(r.Body).Decode(&changeUserPassword); err != nil {
+		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := helper.CheckForValidationErrMessages(changeUserPassword); err != nil {
 		helper.JSONResponseWithError(w, http.StatusBadRequest, err)
 		return
 	}
