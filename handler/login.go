@@ -40,7 +40,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	user, err := userRepository.GetUserByEmail(login.Email)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			helper.JSONResponseWithError(w, http.StatusNotFound, errors.New("user not found"))
+			helper.JSONResponseWithError(w, http.StatusNotFound, errors.New("email or password is incorrect"))
 			return
 		}
 		helper.JSONResponseWithError(w, http.StatusInternalServerError, errors.New("something went wrong"))
@@ -49,7 +49,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := user.CheckPassword(login.Password); err != nil {
-		helper.JSONResponseWithError(w, http.StatusUnauthorized, errors.New("invalid password"))
+		helper.JSONResponseWithError(w, http.StatusUnauthorized, errors.New("email or password is incorrect"))
 		return
 	}
 
