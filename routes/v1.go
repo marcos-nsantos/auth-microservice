@@ -12,6 +12,7 @@ func AuthHandleRequestsV1(v1 chi.Router) {
 	v1.Get("/{id}", handler.FindUserByID)
 	v1.Put("/{id}", handler.UpdateUser)
 	v1.Patch("/changePassword/{id}", handler.UpdateUserPassword)
+	v1.Delete("/{id}", handler.DeleteUser)
 }
 
 func NoAuthHandleRequestsV1(v1 chi.Router) {
