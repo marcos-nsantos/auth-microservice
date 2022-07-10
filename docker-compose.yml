@@ -10,6 +10,7 @@ services:
     ports:
       - "8081:80"
     environment:
+      JWT_SECRET: "z,hh-6F*n+mGZj7uom+QfJ(6@V^cRyr*"
       DSN: "host=postgres user=postgres password=password dbname=users port=5432 sslmode=disable"
     depends_on:
       - postgres
