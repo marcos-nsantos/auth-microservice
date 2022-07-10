@@ -3,11 +3,18 @@ package routes
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/marcos-nsantos/e-commerce/auth-service/handler"
+	"github.com/marcos-nsantos/e-commerce/auth-service/middleware"
 )
 
-func HandleRequestsV1(v1 chi.Router) {
-	v1.Post("/users", handler.CreateUser)
-	v1.Get("/users/{id}", handler.FindUserByID)
-	v1.Put("/users/{id}", handler.UpdateUser)
-	v1.Patch("/users/changePassword/{id}", handler.UpdateUserPassword)
+func AuthHandleRequestsV1(v1 chi.Router) {
+	v1.Use(middleware.Authenticate)
+
+	v1.Get("/{id}", handler.FindUserByID)
+	v1.Put("/{id}", handler.UpdateUser)
+	v1.Patch("/changePassword/{id}", handler.UpdateUserPassword)
+}
+
+func NoAuthHandleRequestsV1(v1 chi.Router) {
+	v1.Post("/", handler.CreateUser)
+	v1.Post("/login", handler.Login)
 }

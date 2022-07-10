@@ -11,7 +11,8 @@ func HandleRequests() *chi.Mux {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Heartbeat("/ping"))
 
-	r.Route("/v1", HandleRequestsV1)
+	r.Route("/v1/auth/users", AuthHandleRequestsV1)
+	r.Route("/v1/users", NoAuthHandleRequestsV1)
 
 	return r
 }
