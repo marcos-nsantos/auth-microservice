@@ -39,3 +39,12 @@ func (ur *UserRepository) Update(user *model.User) error {
 func (ur *UserRepository) UpdatePassword(user *model.User) error {
 	return ur.db.Model(&user).Update("password", user.Password).Error
 }
+
+func (ur *UserRepository) GetUserByEmail(email string) (*model.User, error) {
+	var user model.User
+	err := ur.db.Select("email, password").Where("email = ?", email).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
