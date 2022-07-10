@@ -2,9 +2,11 @@ package security
 
 import (
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -39,6 +41,30 @@ func ValidateToken(r *http.Request) error {
 	}
 
 	return jwt.ErrSignatureInvalid
+}
+
+func ExtractUserID(r *http.Request) (uint, error) {
+	tokenString := getToken(r)
+	if len(tokenString) == 0 {
+		return 0, errors.New("token not found")
+	}
+
+	token, err := jwt.Parse(tokenString, validateKey)
+	if err != nil {
+		return 0, err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return 0, jwt.ErrSignatureInvalid
+	}
+
+	userId, err := strconv.ParseUint(fmt.Sprintf("%.f", claims["id"]), 10, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return uint(userId), nil
 }
 
 func getToken(r *http.Request) string {
