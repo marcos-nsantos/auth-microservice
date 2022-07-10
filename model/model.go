@@ -9,7 +9,7 @@ import (
 type User struct {
 	ID        uint           `json:"id" gorm:"primaryKey;->"`
 	Name      string         `json:"name" gorm:"not null;type:varchar(255)" validate:"required,notblank,min=3,max=255"`
-	Email     string         `json:"email" gorm:"not null;type:varchar(255)" validate:"required,notblank,email"`
+	Email     string         `json:"email" gorm:"not null;unique;type:varchar(255)" validate:"required,notblank,email"`
 	Password  string         `json:"password,omitempty" gorm:"not null;type:varchar(64)" validate:"required,notblank,min=8,max=64"`
 	CreatedAt time.Time      `json:"-"`
 	UpdatedAt time.Time      `json:"-"`
