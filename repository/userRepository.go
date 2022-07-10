@@ -48,3 +48,7 @@ func (ur *UserRepository) GetUserByEmail(email string) (*model.User, error) {
 	}
 	return &user, nil
 }
+
+func (ur *UserRepository) DeleteUser(id uint) error {
+	return ur.db.Delete(&model.User{}, id).Error
+}
