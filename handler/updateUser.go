@@ -8,6 +8,7 @@ import (
 	"github.com/marcos-nsantos/e-commerce/auth-service/helper"
 	"github.com/marcos-nsantos/e-commerce/auth-service/model"
 	"github.com/marcos-nsantos/e-commerce/auth-service/repository"
+	"github.com/marcos-nsantos/e-commerce/auth-service/security"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
@@ -24,6 +25,17 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	IDUint, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
 		helper.JSONResponseWithError(w, http.StatusBadRequest, errors.New("invalid id"))
+		return
+	}
+
+	userAuthID, err := security.ExtractUserID(r)
+	if err != nil {
+		helper.JSONResponseWithError(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	if userAuthID != uint(IDUint) {
+		helper.JSONResponseWithError(w, http.StatusForbidden, errors.New("you are not allowed to update this user"))
 		return
 	}
 
